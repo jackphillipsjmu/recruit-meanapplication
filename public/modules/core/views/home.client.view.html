@@ -1,0 +1,251 @@
+<section data-ng-controller="HomeController">
+	<div class="row">
+
+		<div class="col-sm-6"  data-ng-controller="CustomersController as customersCtrl">
+			<div class="row">
+				<div class="col-xs-2">
+					<h1>
+						<a type="button" class="btn btn-success" href="#!/customers">
+							<i class="glyphicon glyphicon-user"></i>
+						</a>
+					</h1>
+				</div>
+				<div class="col-xs-10">
+					<h1>
+						{{ customersCtrl.customers.length }}
+						<small>Customers</small>
+					</h1>
+				</div>
+			</div>
+			<div class="row">
+				<accordion class="col-xs-10" close-others="oneAtATime">
+					<accordion-group is-open="status.open">
+						<accordion-heading>
+							<small>
+								<span class="text-muted">TOTAL CUSTOMERS</span>
+								<i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': status.open,
+								'glyphicon-chevron-right': !status.open}"></i>
+							</small>
+						</accordion-heading>
+						<div data-ng-repeat="cust in customersCtrl.customers">
+							<ul style="list-style-type: none">
+								<li>
+									<!--<a href="#!/events/{{cust._id}}">{{ cust.firstName }} {{ cust.lastName }}</a>-->
+									<a data-ng-click="customersCtrl.modalUpdate('lg', cust)">
+										{{ cust.firstName }} {{ cust.lastName }}
+									</a>
+								</li>
+							</ul>
+						</div>
+					</accordion-group>
+				</accordion>
+			</div>
+		</div>
+
+		<!--SECTION: UPCOMING EVENTS-->
+		<div class="col-sm-6" data-ng-controller="EventsController as eventsCtrl">
+			<div class="row">
+				<div class="col-xs-2">
+					<h1>
+						<a type="button" class="btn btn-primary" href="#!/events">
+							<i class="glyphicon glyphicon-calendar"></i>
+						</a>
+					</h1>
+				</div>
+				<div class="col-xs-10" >
+					<h1>{{ eventsCtrl.getTotalEvents() }}
+						<small>Events</small>
+					</h1>
+				</div>
+			</div>
+			<div class="row">
+				<accordion class="col-xs-10" close-others="oneAtATime">
+					<accordion-group is-open="status.open">
+						<accordion-heading>
+							<small>
+								<span class="text-muted">UPCOMING EVENTS</span>
+								<i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': status.open,
+								'glyphicon-chevron-right': !status.open}"></i>
+							</small>
+						</accordion-heading>
+						<div data-ng-repeat="event in eventsCtrl.events">
+							<ul style="list-style-type: none">
+								<li><a href="#!/events/{{event._id}}">{{event.name}} ({{ event.date | date:'MM/dd/yyyy'}})</a></li>
+							</ul>
+						</div>
+					</accordion-group>
+				</accordion>
+			</div>
+		</div>
+
+		<!--SECTION: NEW APPLICANTS IN PAST 24 HOURS-->
+		<div class="col-sm-6" data-ng-controller="ApplicantsController as applicantsCtrl">
+			<div class="row">
+				<div class="col-xs-2">
+					<h1>
+						<a type="button" class="btn btn-success" href="#!/applicants" >
+							<i class="glyphicon glyphicon-bullhorn"></i>
+						</a>
+					</h1>
+				</div>
+				<div class="col-xs-10">
+					<h1>
+						{{ applicantsCtrl.getNew24HourApplicants()}}
+						<!-- Check to see if there is 1 or more applicants and adjust plural -->
+						<small data-ng-show="applicantsCtrl.getNew24HourApplicants() <= 1">New Applicant</small>
+						<small data-ng-show="applicantsCtrl.getNew24HourApplicants() > 1">New Applicants</small>
+					</h1>
+				</div>
+			</div>
+			<div class="row">
+				<accordion class="col-xs-10" close-others="oneAtATime">
+					<accordion-group is-open="status.open">
+						<accordion-heading>
+							<small>
+								<span class="text-muted">PAST 24 HOURS</span>
+								<i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': status.open,
+								'glyphicon-chevron-right': !status.open}"></i>
+							</small>
+						</accordion-heading>
+						<div data-ng-repeat="applicant in applicantsCtrl.applicants">
+							<ul style="list-style-type: none">
+								<li data-ng-show="applicantsCtrl.getYesterdayDate(applicant.created)">
+									<a href="#!/applicants/{{ applicant._id }}">
+										{{ applicant.firstName }} {{ applicant.lastName }} ({{ applicant.position }})
+									</a>
+								</li>
+
+							</ul>
+						</div>
+					</accordion-group>
+				</accordion>
+			</div>
+		</div>
+
+		<!--SECTION: TOTAL APPLICANTS-->
+		<div class="col-sm-6">
+			<div class="row">
+				<div class="col-xs-2">
+					<h1>
+						<a type="button" class="btn btn-info" href="#!/applicants">
+							<i class="glyphicon glyphicon-record"></i>
+						</a>
+					</h1>
+				</div>
+				<div class="col-xs-10" data-ng-controller="ApplicantsController as applicantsCtrl">
+					<h1>
+						{{ applicantsCtrl.getTotalApplicants() }}
+						<small>Applicants</small>
+					</h1>
+				</div>
+			</div>
+			<div class="row">
+				<accordion class="col-xs-10" close-others="oneAtATime">
+					<accordion-group is-open="status.open">
+						<accordion-heading>
+							<small>
+								<span class="text-muted text-center">TOTAL APPLICANTS</span>
+								<i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+							</small>
+						</accordion-heading>
+						<div data-ng-controller="ApplicantsController as applicantsCtrl">
+							<div data-ng-repeat="applicant in applicantsCtrl.applicants">
+								<ul style="list-style-type: none">
+									<li>
+										<a href="#!/applicants/{{applicant._id}}">{{applicant.firstName}}
+											{{applicant.lastName}} ({{ applicant.position }})
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</accordion-group>
+				</accordion>
+			</div>
+		</div>
+
+		<!--SECTION: FOLLOWUPS-->
+		<div class="col-sm-6">
+			<div class="row">
+				<div class="col-xs-2" >
+					<h1>
+						<a type="button" class="btn btn-warning" href="#!/applicants">
+							<i class="glyphicon glyphicon-eye-open"></i>
+						</a>
+					</h1>
+				</div>
+				<div class="col-xs-10" data-ng-controller="ApplicantsController as applicantsCtrl">
+					<h1>{{ applicantsCtrl.getTotalApplicantFollowups() }} <small>Followups</small></h1>
+				</div>
+			</div>
+			<div class="row">
+				<accordion class="col-xs-10" close-others="oneAtATime">
+					<accordion-group is-open="status.open">
+						<accordion-heading>
+							<small>
+								<span class="text-muted text-center">FOLLOW UPS REQUIRED</span>
+								<i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+							</small>
+						</accordion-heading>
+						<div data-ng-controller="ApplicantsController as applicantsCtrl">
+							<div data-ng-repeat="applicant in applicantsCtrl.applicants">
+								<ul style="list-style-type: none">
+									<li data-ng-show="applicant.followup">
+										<a href="#!/applicants/{{applicant._id}}">{{applicant.firstName}}
+											{{applicant.lastName}}
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</accordion-group>
+				</accordion>
+			</div>
+		</div>
+
+		<!--SECTION: REFERRALS-->
+		<div class="col-sm-6">
+			<div class="row">
+				<div class="col-xs-2">
+					<h1>
+						<a type="button" class="btn btn-danger" href="#!/customers">
+							<i class="glyphicon glyphicon-flag"></i>
+						</a>
+					</h1>
+				</div>
+				<div class="col-xs-10" data-ng-controller="ApplicantsController as applicantsCtrl">
+					<h1>{{ applicantsCtrl.getTotalApplicantReferrals() }} <small>Referrals</small></h1>
+				</div>
+			</div>
+			<div class="row">
+				<accordion class="col-xs-10" close-others="oneAtATime">
+					<accordion-group is-open="status.open">
+						<accordion-heading>
+							<small>
+								<span class="text-muted text-center">LIST OF REFERRALS</span>
+								<i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+							</small>
+						</accordion-heading>
+						<div data-ng-controller="ApplicantsController as applicantsCtrl">
+							<div data-ng-repeat="applicant in applicantsCtrl.applicants">
+								<ul style="list-style-type: none">
+									<li data-ng-show="applicant.referred">
+										<a href="#!/applicants/{{applicant._id}}">{{applicant.firstName}}
+											{{applicant.lastName}}
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</accordion-group>
+				</accordion>
+			</div>
+		</div>
+	</div>
+	<!-- TEST DIV -->
+	<!--<div data-ng-controller="ApplicantsController as applicantsCtrl">-->
+		<!--<div data-ng-repeat="applicant in applicantsCtrl.applicants">-->
+			<!--<p data-ng-show="applicantsCtrl.getYesterdayDate(applicant.created)">TEST: {{applicant.firstName}}</p>-->
+		<!--</div>-->
+	</div>
+</section>

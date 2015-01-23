@@ -1,0 +1,111 @@
+<section data-ng-controller="EventsController as eventsCtrl">
+    <div class="modal-header">
+        <h1>New Event</h1>
+    </div>
+
+    <div class="modal-body">
+        <form name="createEventForm">
+            <fieldset>
+                <div class="row">
+                    <!-- Error checking for forms -->
+                    <div class="form-group">
+                        <div data-ng-show="error" class="text-center text-danger">
+                            <div class="alert alert-danger" role="alert">
+                                <strong data-ng-bind="error"></strong>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Datepicker -->
+                    <div class="col-sm-6">
+                        <div class="col-sm-push-6" style="display:inline-block; min-height:290px;">
+                            <datepicker ng-model="date" min-date="minDate" show-weeks="true" class="well well-sm"></datepicker>
+                        </div>
+                    </div>
+                    <!-- Start/End Times for event -->
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label class="control-label">Start Time</label>
+                                <timepicker data-ng-model="start" data-ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+                                <label class="control-label">End Time</label>
+                                <timepicker data-ng-model="end" data-ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+                            </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 col-sm-pull-6">
+                        <!--Event Name-->
+                        <div class="form-group">
+                            <label class="control-label" for="name">Event Name</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Event Name" required>
+                            </div>
+                        </div>
+
+                        <!--Address-->
+                        <div class="form-group">
+                            <label class="control-label" for="address">Address</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="address" id="address" class="form-control" placeholder="Street, City, State Zip Code" required>
+                            </div>
+                        </div>
+
+                        <!--Phone Number-->
+                        <div class="form-group">
+                            <label class="control-label" for="phone">Phone</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="phone" id="phone" class="form-control" placeholder="Phone" required>
+                            </div>
+                        </div>
+
+                        <!--Email-->
+                        <div class="form-group">
+                            <label class="control-label" for="email">Email</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="email" id="email" class="form-control" placeholder="Email" required>
+                            </div>
+                        </div>
+
+                        <!--Coordinator Name-->
+                        <div class="form-group">
+                            <label class="control-label" for="coordinator">Coordinator</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="coordinator" id="coordinator" class="form-control" placeholder="Coordinator Name" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <!--Description-->
+                        <div class="form-group">
+                            <label class="control-label" for="description">Description</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="description" id="description" class="form-control" placeholder="Description" required>
+                            </div>
+                        </div>
+
+                        <!--Additional Notes-->
+                        <div class="form-group">
+                            <label class="control-label" for="notes">Additional Notes</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="notes" id="notes" class="form-control" placeholder="Notes">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <!--Submit and Cancel Buttons-->
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-lg btn-success" data-ng-click="create()">
+                                Create
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</section>

@@ -1,0 +1,109 @@
+<section data-ng-controller="ApplicantsController" data-ng-init="findOne()">
+	<div class="modal-header">
+		<h1 data-ng-bind="applicant.name"></h1>
+	</div>
+
+	<div class="modal-body">
+		<form name="viewApplicantForm">
+			<fieldset>
+				<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == applicant.user._id))">
+					<a class="btn btn-primary" href="/#!/applicants/{{applicant._id}}/edit">
+						<i class="glyphicon glyphicon-edit"></i>
+					</a>
+					<a class="btn btn-primary" data-ng-click="remove();">
+						<i class="glyphicon glyphicon-trash"></i>
+					</a>
+				</div>
+
+				<div class="h2">
+					<span class="glyphicon glyphicon-user"></span>
+					<b>{{ applicant.firstName }} {{ applicant.lastName }}</b>
+					<!-- If the client is referred or needs a followup show the checkbox glyph -->
+					<small data-ng-show="applicant.referred"><span class="glyphicon glyphicon-check"></span> Referred</small>
+					<small data-ng-show="applicant.followup"><span class="glyphicon glyphicon-check"></span> Followup		</small>
+				</div>
+
+				<div>
+					<h3>
+						<small>
+							<b>Position: </b>{{applicant.position}}
+						</small>
+					</h3>
+				</div>
+
+				<!--SECTION: Contact-->
+				<accordion close-others="oneAtATime">
+					<accordion-group is-open="status.open">
+						<accordion-heading>
+							Contact
+							<i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+						</accordion-heading>
+
+						<ul style="list-style-type:none">
+							<!--<a href="tel:555-555-5555">555-555-5555</a>-->
+							<li><b>Phone: </b><a href="tel:{{ applicant.phone }}">{{ applicant.phone }}</a></li>
+							<li><b>Email: </b><a href="mailto:{{ applicant.email }}">{{ applicant.email }}</a></li>
+							<li><b>Address: </b><a href="http://maps.google.com/?q={{ applicant.address }}">
+								{{ applicant.address }}</a>
+							</li>
+						</ul>
+					</accordion-group>
+				</accordion>
+
+				<!--SECTION: Education and Employment-->
+				<accordion close-others="oneAtATime">
+					<accordion-group is-open="status.open">
+						<accordion-heading>
+							Education and Employment
+							<i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+						</accordion-heading>
+						<ul style="list-style-type:none">
+							<li><b>School: </b> {{ applicant.school }}</li>
+							<li data-ng-show="!applicant.graduated"><b>Expected Graduation: </b>{{ applicant.graduation | date:'MM/dd/yyyy' }}</li>
+							<li><b>Degree/Major: </b> {{ applicant.degree }}</li>
+							<li><b>Experience: </b>{{ applicant.experience }}</li>
+							<li><b>Skills: </b>{{ applicant.skills }}</li>
+						</ul>
+
+					</accordion-group>
+				</accordion>
+
+				<!--SECTION: Additonal Information-->
+				<accordion close-others="oneAtATime">
+					<accordion-group is-open="status.open">
+						<accordion-heading>
+							Additional Information
+							<i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+						</accordion-heading>
+						<p><b>Notes: </b>{{ applicant.notes }}</p>
+					</accordion-group>
+				</accordion>
+
+
+				<a class="btn btn-primary" href="/#!/applicants/{{applicant._id}}/edit">
+					<i class="glyphicon glyphicon-edit"></i>
+				</a>
+				<a class="btn btn-primary" data-ng-click="remove();">
+					<i class="glyphicon glyphicon-trash"></i>
+				</a>
+				<br><br>
+				<small>
+					<em class="text-muted">
+						Posted on
+						<span data-ng-bind="applicant.created | date:'mediumDate'"></span>
+						by
+						<span data-ng-bind="applicant.user.displayName"></span>
+					</em>
+				</small>
+
+				<br>
+				<div class="form-group">
+					<!--<label class="control-label" for="myFile">Upload Files</label>-->
+					<input type="file" data-ng-model="myFile" file-model="myFile" /><br>
+					<button data-ng-click="uploadFile()">Upload</button>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+
+</section>

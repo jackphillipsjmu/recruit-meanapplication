@@ -1,0 +1,55 @@
+<section data-ng-controller="EventsController as eventsCtrl" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Events</h1>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group input-group-lg">
+                <input type="text" class="form-control" data-ng-model="searchText" placeholder="Search Events">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+            </span>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-4 text-center">
+            <!--<button type="button" class="btn btn-success text-center" data-ng-click="customersCtrl.modalCreate('lg')">-->
+            <a type="button" class="btn btn-success text-center" href="#!/events/create">
+                <i class="glyphicon glyphicon-user"></i><br>
+                New Event
+            </a>
+            <!--</button>-->
+        </div>
+    </div>
+
+    <br>
+    <div class="list-group">
+        <!--<a data-ng-repeat="event in events | filter:searchText" data-ng-href="#!/events/{{event._id}}" class="list-group-item">-->
+        <a data-ng-repeat="event in events | filter:searchText" data-ng-click="eventsCtrl.modalView('lg', event)" class="list-group-item">
+            <div class="h2">
+                <span class="glyphicon glyphicon-map-marker"></span>
+                {{event.name}}
+            </div>
+
+            <br>
+            <small class="list-group-item-text">
+                Posted on
+                <span data-ng-bind="event.created | date:'medium'"></span>
+                by
+                <span data-ng-bind="event.user.displayName"></span>
+            </small>
+            <br><br>
+            <p><b>When: </b> {{ event.date | date:'MM-dd-yyyy'}} ({{ event.start | date:'shortTime' }} - {{ event.end | date:'shortTime'}})</p>
+            <p><b>Where: </b> {{ event.address }}</p>
+            <p><b>Description: </b> {{ event.description }}</p>
+
+            <!--<a href="http://maps.google.com/?q=1200 Pennsylvania Ave SE, Washington, District of Columbia, 20003">White House</a>-->
+        </a>
+    </div>
+
+
+
+
+    <div class="alert alert-warning text-center" data-ng-hide="!events.$resolved || events.length">
+        No Events yet, why don't you <a href="/#!/events/create">create one</a>?
+    </div>
+</section>

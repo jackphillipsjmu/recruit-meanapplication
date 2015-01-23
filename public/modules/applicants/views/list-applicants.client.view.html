@@ -1,0 +1,50 @@
+<section data-ng-controller="ApplicantsController as applicantsCtrl">
+    <div class="page-header">
+        <h1>Applicants</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group input-group-lg">
+                <input type="text" class="form-control" data-ng-model="searchText" placeholder="Search Applicants">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+            </span>
+            </div>
+        </div>
+        <!--New Applicant button-->
+        <div class="col-xs-12 col-sm-4 text-center">
+            <!--<button type="button" class="btn btn-success text-center" data-ng-click="customersCtrl.modalCreate('lg')">-->
+            <a type="button" class="btn btn-success text-center" href="#!/applicants/create">
+                <i class="glyphicon glyphicon-user"></i><br>
+                New Applicant
+            </a>
+            <!--</button>-->
+        </div>
+    </div>
+    <br>
+
+    <div class="list-group">
+        <div class="col-xs-6 col-sm-4" data-ng-repeat="applicant in applicantsCtrl.applicants | filter:searchText">
+
+            <a href="#!/applicants/{{applicant._id}}" class="list-group-item">
+            <!--<a data-ng-click="applicantsCtrl.modalView('lg', applicant)" class="list-group-item">-->
+            <h4 class="applicant-list text-center">
+                    <i class="glyphicon glyphicon-user"
+                       data-ng-class="{'text-primary': applicant.followup, 'text-danger': !applicant.followup}"></i>
+                </h4>
+                <div class="row">
+                    <div class="col-xs-10 col-xs-offset-1 text-center">
+                        <h4>{{ applicant.firstName }} {{ applicant.lastName }}</h4>
+                        <p class="text-center text-muted"><b>Postion: </b>{{ applicant.position }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+
+    <div class="alert alert-warning text-center" data-ng-hide="!applicants.$resolved || applicants.length">
+    	No Applicants yet, why don't you <a href="/#!/applicants/create">create one</a>?
+    </div>
+</section>

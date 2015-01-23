@@ -1,0 +1,35 @@
+<section data-ng-controller="CustomersController as customersCtrl">
+    <div class="page-header">
+        <h1>Customers</h1>
+    </div>
+    <!-- SEARCH FEATURE - Extra small device col go the entire length, small go 2/3 (8/12) of the way -->
+    <div class="row">
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group input-group-lg">
+                <input type="text" class="form-control" data-ng-model="searchText" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">Go!</button>
+                </span>
+            </div>
+        </div>
+
+        <!-- New customer button with icon -->
+        <div class="col-xs-12 col-sm-4 text-center">
+            <button type="button" class="btn btn-success text-center" data-ng-click="customersCtrl.modalCreate('lg')">
+                <i class="glyphicon glyphicon-user"></i><br>
+                New Customer
+            </button>
+        </div>
+    </div>
+    <!-- breaks for spacing -->
+    </br>
+    </br>
+    <!-- Directive located in controller -->
+    <customer-list></customer-list>
+
+
+    <!--<p>Total Customers: {{ customersCtrl.customers.length }}</p>-->
+    <!--<p>Total Referrals: {{ customersCtrl.getTotalReferrals() }}</p>-->
+    <!--<p>Past 24 Hours: {{ customersCtrl.getNew24HourCustomers() }}</p>-->
+
+</section>

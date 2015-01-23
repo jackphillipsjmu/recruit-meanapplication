@@ -1,0 +1,136 @@
+<section data-ng-controller="ApplicantsController as applicantCtrl">
+    <div class="modal-header">
+        <h1>New Applicant</h1>
+    </div>
+
+    <div class="modal-body">
+        <form name="createEventForm">
+            <fieldset>
+                <div class="row">
+                    <!-- Error checking for forms -->
+                    <div class="form-group">
+                        <div data-ng-show="error" class="text-center text-danger">
+                            <div class="alert alert-danger" role="alert">
+                                <strong data-ng-bind="error"></strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="firstName">First Name</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="firstName" id="firstName" class="form-control" placeholder="First Name">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="lastName">Last Name</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="lastName" id="lastName" class="form-control" placeholder="Last Name">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="address">Address</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="address" id="address" class="form-control" placeholder="Street City, State Zip">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="email">Email</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="email" id="email" class="form-control" placeholder="Email">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="phone">Phone</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="phone" id="phone" class="form-control" placeholder="Phone">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="position">Position</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="position" id="position" class="form-control" placeholder="Position">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Section Contains: Position, College, Degree, Experience, Skills, Notes-->
+                    <div class="col-sm-6">
+
+
+                        <div class="form-group">
+                            <label class="control-label" for="school">College/University</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="school" id="school" class="form-control" placeholder="College/University">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="degree">Degree/Major</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="degree" id="degree" class="form-control" placeholder="Degree/Major">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="experience">Experience</label>
+                            <div class="controls">
+                                <textarea data-ng-model="experience" id="experience" class="form-control" placeholder="Experience"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="skills">Skills</label>
+                            <div class="controls">
+                                <textarea data-ng-model="skills" id="skills" class="form-control" placeholder="Skills"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="notes">Additional Notes</label>
+                            <div class="controls">
+                                <textarea data-ng-model="notes" id="notes" class="form-control" placeholder="Additional Notes"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="checkbox"  data-ng-model="referred" id="referred" name="referred"/>
+                            <label for="referred">Referred</label>
+
+                            <input type="checkbox"  data-ng-model="followup" id="followup" name="followup"/>
+                            <label for="followup">Followup</label>
+
+                            <input type="checkbox"  data-ng-model="graduated" id="graduated" name="graduated" class="toggle"/>
+                            <label for="graduated">Graduated</label>
+
+                            <!-- Graduation Date hide datepicker if they have already graduated-->
+                            <div data-ng-hide="graduated">
+                                <small class="text-center text-muted"><i>Enter Graduation Date</i></small>
+                                <div class="col-sm-push-6" style="display:inline-block; min-height:290px;">
+                                    <datepicker data-ng-model="graduation" min-date="minDate" show-weeks="true" class="well well-sm"></datepicker>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-lg btn-success" data-ng-click="create(); uploadFile()">
+                        Create
+                    </button>
+                    <button type="submit" class="btn btn-lg btn-warning"  data-ng-click="cancel()">
+                        Cancel
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</section>
+
+

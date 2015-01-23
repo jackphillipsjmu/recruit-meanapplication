@@ -1,0 +1,50 @@
+<section data-ng-controller="EventsController">
+	<div class="modal-header">
+		<h3 class="modal-title" data-ng-bind="event.name"></h3>
+	</div>
+
+	<div class="modal-body">
+		<form name="viewEventForm">
+			<fieldset>
+				<div class="row">
+					<div class="col-sm-12">
+						<h4>Basics</h4>
+						<ul style="list-style-type:none">
+							<li><b>Date: </b> {{ event.date | date:'MM/dd/yyyy'}}</li>
+							<li><b>Time: </b>{{ event.start | date:'shortTime' }} - {{ event.end | date:'shortTime'}}</li>
+							<li><b>Where: </b> <a href="http://maps.google.com/?q={{event.address}}">{{event.address}}</a></li>
+							<li><b>Description: </b> {{ event.description }}</li>
+						</ul>
+
+						<h4>Contact</h4>
+						<ul style="list-style-type: none">
+							<li><b>Phone: </b> <a href="tel:{{ event.phone }}">{{ event.phone }}</a></li>
+							<li><b>Email: </b> <a href="mailto:{{ event.email }}">{{ event.email }}</a></li>
+							<li><b>Coordinator: </b> {{ event.coordinator }}</li>
+						</ul>
+
+						<p><b>Additonal Notes: </b> {{ event.notes }}</p>
+
+						<!-- When and who posted the event -->
+						<small>
+							<em class="text-muted">
+								Posted on
+								<span data-ng-bind="event.created | date:'mediumDate'"></span>
+								by
+								<span data-ng-bind="event.user.displayName"></span>
+							</em>
+						</small>
+					</div>
+				</div>
+				<div class="row">
+					<div class="modal-footer">
+						<a class="btn btn-success" href="/#!/events/{{event._id}}/edit" data-ng-click="ok()">
+							<i class="glyphicon glyphicon-edit"></i>
+							Edit</a>
+						<button class="btn btn-warning" data-ng-click="cancel()">Cancel</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</section>
