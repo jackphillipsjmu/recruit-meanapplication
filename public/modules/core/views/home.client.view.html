@@ -30,7 +30,6 @@
 						<div data-ng-repeat="cust in customersCtrl.customers">
 							<ul style="list-style-type: none">
 								<li>
-									<!--<a href="#!/events/{{cust._id}}">{{ cust.firstName }} {{ cust.lastName }}</a>-->
 									<a data-ng-click="customersCtrl.modalUpdate('lg', cust)">
 										{{ cust.firstName }} {{ cust.lastName }}
 									</a>
@@ -70,7 +69,9 @@
 						</accordion-heading>
 						<div data-ng-repeat="event in eventsCtrl.events">
 							<ul style="list-style-type: none">
-								<li><a href="#!/events/{{event._id}}">{{event.name}} ({{ event.date | date:'MM/dd/yyyy'}})</a></li>
+								<li>
+									<a data-ng-click="eventsCtrl.modalView('lg', event)">{{event.name}} ({{ event.date | date:'MM/dd/yyyy'}})</a>
+								</li>
 							</ul>
 						</div>
 					</accordion-group>

@@ -68,7 +68,7 @@ eventsApp.controller('EventsController', ['$scope', '$stateParams', '$location',
 			var event = $scope.event;
 
 			event.$update(function() {
-				$location.path('events/' + event._id);
+				$location.path('events');
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
