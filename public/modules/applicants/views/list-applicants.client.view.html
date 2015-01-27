@@ -25,13 +25,13 @@
 
     <div class="list-group">
         <div class="col-xs-6 col-sm-4" data-ng-repeat="applicant in applicantsCtrl.applicants | filter:searchText">
-
-            <!--<a href="#!/applicants/{{applicant._id}}" class="list-group-item">-->
-            <!--<a data-ng-click="applicantsCtrl.modalApplicantView('lg', applicant)" class="list-group-item">-->
+            <!-- Edit and Remove Icons -->
             <div class="row text-right">
-                <i tooltip="Edit {{applicant.firstName + ' ' + applicant.lastName}}" class="applicant-edit glyphicon glyphicon-edit" data-ng-click="applicantsCtrl.modalApplicantUpdate('lg', applicant)"></i>
-                <!--<i ng-really-message="Are you sure?" ng-really-click="delete()" tooltip="Remove {{applicant.firstName + ' ' + applicant.lastName}}" class="applicant-remove applicant-options glyphicon glyphicon-remove-circle" data-ng-click="remove(applicant); ok();"></i>-->
-                <i ng-really-message="Are you sure you want to remove {{applicant.firstName + ' ' + applicant.lastName}}?" ng-really-click="remove(applicant); ok();" tooltip="Remove {{applicant.firstName + ' ' + applicant.lastName}}" class="applicant-remove applicant-options glyphicon glyphicon-remove-circle"></i>
+                <i class="applicant-edit glyphicon glyphicon-edit"
+                   data-ng-click="applicantsCtrl.modalApplicantUpdate('lg', applicant)"></i>
+                <i ng-really-message="Are you sure you want to remove {{applicant.firstName + ' ' + applicant.lastName}}?"
+                   ng-really-click="remove(applicant); ok();"
+                   class="applicant-remove applicant-options glyphicon glyphicon-trash"></i>
             </div>
 
 

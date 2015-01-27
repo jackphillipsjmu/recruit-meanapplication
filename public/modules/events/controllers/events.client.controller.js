@@ -4,8 +4,8 @@ var eventsApp = angular.module('events');
 
 // Events controller
 eventsApp.controller('EventsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Events',
-	'$modal', '$log',
-	function($scope, $stateParams, $location, Authentication, Events, $modal, $log) {
+	'$modal', '$log', '$state',
+	function($scope, $stateParams, $location, Authentication, Events, $modal, $log, $state) {
 		this.authentication = Authentication;
 
 		this.events = Events.query();
@@ -37,7 +37,7 @@ eventsApp.controller('EventsController', ['$scope', '$stateParams', '$location',
 			console.log(event.name);
 			// Redirect after save
 			event.$save(function(response) {
-				$location.path('events/' + event._id);
+				$location.path('events');
 
 				// Clear form fields
 				$scope.name = '';
@@ -61,6 +61,7 @@ eventsApp.controller('EventsController', ['$scope', '$stateParams', '$location',
 					$location.path('events');
 				});
 			}
+			$state.reload();
 		};
 
 		// Update existing Event
@@ -157,23 +158,7 @@ eventsApp.controller('EventsController', ['$scope', '$stateParams', '$location',
 	}
 ]);
 
-eventsApp.directive('googlePlaces', function(){
-		return {
-			restrict:'E',
-			replace:true,
-			// transclude:true,
-			scope: {location:'='},
-			template: '<input id="google_places_ac" name="google_places_ac" type="text" class="input-block-level"/>',
-			link: function($scope, elm, attrs){
-				var autocomplete = new google.maps.places.Autocomplete($("#google_places_ac")[0], {});
-				google.maps.event.addListener(autocomplete, 'place_changed', function() {
-					var place = autocomplete.getPlace();
-					$scope.location = place.geometry.location.lat() + ',' + place.geometry.location.lng();
-					$scope.$apply();
-				});
-			}
-		};
-	});
+
 
 eventsApp.factory('AddressGeocoder', ['$q', function($q) {
 	var myGeo;
@@ -210,14 +195,14 @@ eventsApp.factory('AddressGeocoder', ['$q', function($q) {
 			return deferred.promise;
 		}
 	};
-	//console.log('myGeo: ' + myGeo.location.latitude);
 	return myGeo;
 }]);
 
 eventsApp.controller('MapsController', ['$scope', 'AddressGeocoder', function ($scope, AddressGeocoder) {
-
 	// Default address
 	$scope.address;
+
+	$scope.markers = [];
 
 	// Default map code
 	$scope.map = {
@@ -225,23 +210,32 @@ eventsApp.controller('MapsController', ['$scope', 'AddressGeocoder', function ($
 			latitude: 0,
 			longitude: 0
 		},
-		zoom: 17
+		zoom: 15
 	};
 
+	// Finds geocode of provided address
 	$scope.findAddress = function (eventAddr) {
-		console.log('FIND ADDR: ' + eventAddr);
 		AddressGeocoder.getLocation(eventAddr).then(function (result) {
 
 			if (result.success) {
-				console.log('WE GOOD SAHN');
 				$scope.map.center = result.location;
 
-				console.log('LOCATION LAT/LNG: ' + result.location.latitude + '/' + result.location.latitude);
-			}
+				$scope.marker = new google.maps.Marker({
+					id: 0,
+					position: new google.maps.LatLng(result.location.latitude, result.location.longitude),
+					setMap: $scope.map,
+					title: eventAddr
+				});
 
+				$scope.markers.push({
+					id: 1,
+					latitude: result.location.latitude,
+					longitude: result.location.longitude
+
+				});
+			}
 		});
 	};
-
 }]);
 
 eventsApp.directive('myMap', function() {

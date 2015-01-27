@@ -8,6 +8,18 @@
 			<fieldset>
 				<div class="row">
 					<div class="col-sm-12">
+						<div>
+							<!-- Edit and Remove Icons -->
+							<div class="row text-right">
+								<a class="event-edit glyphicon glyphicon-edit"
+								   href="/#!/events/{{event._id}}/edit" data-ng-click="ok()"></a>
+								<i ng-really-message="Are you sure you want to remove {{event.name}}"
+								   class="event-remove glyphicon glyphicon-trash"
+								   ng-really-click="remove(event); ok()">
+								</i>
+
+							</div>
+						</div>
 						<h4>Basics</h4>
 						<ul style="list-style-type:none">
 							<li><b>Date: </b> {{ event.date | date:'MM/dd/yyyy'}}</li>
@@ -38,9 +50,9 @@
 				</div>
 				<div class="row">
 					<div class="modal-footer">
-						<a class="btn btn-success" href="/#!/events/{{event._id}}/edit" data-ng-click="ok()">
-							<i class="glyphicon glyphicon-edit"></i>
-							Edit</a>
+						<!--<a class="btn btn-success" href="/#!/events/{{event._id}}/edit" data-ng-click="ok()">-->
+							<!--<i class="glyphicon glyphicon-edit"></i>-->
+							<!--Edit</a>-->
 						<button class="btn btn-warning" data-ng-click="cancel()">Cancel</button>
 					</div>
 				</div>

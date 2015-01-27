@@ -6,13 +6,22 @@
 	<div class="modal-body">
 		<form name="viewApplicantForm">
 			<fieldset>
-				<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == applicant.user._id))">
-					<a class="btn btn-primary" href="/#!/applicants/{{applicant._id}}/edit">
-						<i class="glyphicon glyphicon-edit"></i>
-					</a>
-					<a class="btn btn-primary" data-ng-click="remove();">
-						<i class="glyphicon glyphicon-trash"></i>
-					</a>
+				<!--<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == applicant.user._id))">-->
+					<!--<a class="btn btn-primary" href="/#!/applicants/{{applicant._id}}/edit">-->
+						<!--<i class="glyphicon glyphicon-edit"></i>-->
+					<!--</a>-->
+					<!--<a class="btn btn-primary" data-ng-click="remove();">-->
+						<!--<i class="glyphicon glyphicon-trash"></i>-->
+					<!--</a>-->
+				<!--</div>-->
+
+				<div class="row text-right">
+					<i tooltip="Edit {{applicant.firstName + ' ' + applicant.lastName}}" class="applicant-edit glyphicon glyphicon-edit" data-ng-click="applicantsCtrl.modalApplicantUpdate('lg', applicant)"></i>
+					<i ng-really-message="Are you sure you want to remove {{applicant.firstName + ' ' + applicant.lastName}}?"
+					   ng-really-click="remove(applicant); ok();"
+					   tooltip="Remove {{applicant.firstName + ' ' + applicant.lastName}}"
+					   class="applicant-remove applicant-options glyphicon glyphicon-trash">
+					</i>
 				</div>
 
 				<div class="h2">
@@ -79,16 +88,7 @@
 					</accordion-group>
 				</accordion>
 
-
-				<!--<a class="btn btn-primary" href="/#!/applicants/{{applicant._id}}/edit">-->
-				<a class="btn btn-primary" data-ng-click="applicantsCtrl.modalApplicantUpdate('lg', applicant)">
-					<i class="glyphicon glyphicon-edit"></i>
-				</a>
-				<!--<a class="btn btn-primary" data-ng-click="remove();" href="#!/applicants">-->
-				<a class="btn btn-primary" data-ng-click="remove(applicant); ok();">
-					<i class="glyphicon glyphicon-trash"></i>
-				</a>
-				<br><br>
+				<br>
 				<small>
 					<em class="text-muted">
 						Posted on

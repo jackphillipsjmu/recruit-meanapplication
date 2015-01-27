@@ -45,8 +45,6 @@ applicantsApp.controller('ApplicantsController', ['$scope', '$stateParams', '$lo
 		$scope.remove = function(applicant) {
 			if ( applicant ) { 
 				applicant.$remove();
-				console.log('first remove');
-
 				for (var i in $scope.applicants) {
 					if ($scope.applicants [i] === applicant) {
 						$scope.applicants.splice(i, 1);
@@ -57,7 +55,6 @@ applicantsApp.controller('ApplicantsController', ['$scope', '$stateParams', '$lo
 					$location.path('applicants');
 				});
 			}
-			console.log('after else');
 			//$location.path('applicants');
 			$state.reload();
 		};
