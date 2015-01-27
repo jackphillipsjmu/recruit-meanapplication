@@ -74,8 +74,8 @@ eventsApp.controller('EventsController', ['$scope', '$stateParams', '$location',
 			});
 		};
 
+		// Modal view of the selected Event
 		this.modalView = function(size, selectedEvent) {
-			//console.log(selectedEvent);
 			var modalInstance = $modal.open({
 				templateUrl: 'modules/events/views/view-event.client.view.html',
 				controller: function($scope, $modalInstance, event) {
@@ -175,4 +175,137 @@ eventsApp.directive('googlePlaces', function(){
 		};
 	});
 
-angular.module('myApplicationModule', ['uiGmapgoogle-maps']);
+eventsApp.factory('AddressGeocoder', ['$q', function($q) {
+	var myGeo;
+
+	var result = function() {
+		return {
+			success: false,
+			message: '',
+			location: {
+				latitude: '',
+				longitude: ''
+			}
+		}
+	};
+
+	myGeo = {
+		getLocation:function( address ){
+			var deferred = $q.defer();
+
+			var googleMap = new google.maps.Geocoder();
+			googleMap.geocode( { 'address': address}, function(results, status) {
+				if (status === google.maps.GeocoderStatus.OK) {
+					var ok = new result();
+					ok.success = true;
+					ok.location.latitude = results[0].geometry.location.lat();
+					ok.location.longitude = results[0].geometry.location.lng();
+					deferred.resolve(ok);
+				} else {
+					var error = new result();
+					error.message = 'The geocode was not successful for the these reasons: ' + status;
+					deferred.reject(error);
+				}
+			});
+			return deferred.promise;
+		}
+	};
+	//console.log('myGeo: ' + myGeo.location.latitude);
+	return myGeo;
+}]);
+
+eventsApp.controller('MapsController', ['$scope', 'AddressGeocoder', function ($scope, AddressGeocoder) {
+
+	// Default address
+	$scope.address;
+
+	// Default map code
+	$scope.map = {
+		center: {
+			latitude: 0,
+			longitude: 0
+		},
+		zoom: 17
+	};
+
+	$scope.findAddress = function (eventAddr) {
+		console.log('FIND ADDR: ' + eventAddr);
+		AddressGeocoder.getLocation(eventAddr).then(function (result) {
+
+			if (result.success) {
+				console.log('WE GOOD SAHN');
+				$scope.map.center = result.location;
+
+				console.log('LOCATION LAT/LNG: ' + result.location.latitude + '/' + result.location.latitude);
+			}
+
+		});
+	};
+
+}]);
+
+eventsApp.directive('myMap', function() {
+	// directive link function
+	var link = function(scope, element, attrs) {
+		var map, infoWindow;
+		var markers = [];
+
+		// map config
+		var mapOptions = {
+			center: new google.maps.LatLng(50, 2),
+			zoom: 4,
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			scrollwheel: false
+		};
+
+		// init the map
+		function initMap() {
+			if (map === void 0) {
+				map = new google.maps.Map(element[0], mapOptions);
+			}
+		}
+
+		// place a marker
+		function setMarker(map, position, title, content) {
+			var marker;
+			var markerOptions = {
+				position: position,
+				map: map,
+				title: title,
+				icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
+			};
+
+			marker = new google.maps.Marker(markerOptions);
+			markers.push(marker); // add marker to array
+
+			google.maps.event.addListener(marker, 'click', function () {
+				// close window if not undefined
+				if (infoWindow !== void 0) {
+					infoWindow.close();
+				}
+				// create new window
+				var infoWindowOptions = {
+					content: content
+				};
+				infoWindow = new google.maps.InfoWindow(infoWindowOptions);
+				infoWindow.open(map, marker);
+			});
+		}
+
+		// show the map and place some markers
+		initMap();
+
+		//setMarker(map, new google.maps.LatLng(), 'Test City', 'Test Content');
+		setMarker(map, new google.maps.LatLng(51.508515, -0.125487), 'London', 'Just some content');
+		//setMarker(map, new google.maps.LatLng(52.370216, 4.895168), 'Amsterdam', 'More content');
+		//setMarker(map, new google.maps.LatLng(48.856614, 2.352222), 'Paris', 'Text here');
+	};
+
+	return {
+		restrict: 'A',
+		template: '<div id="gmaps"></div>',
+		replace: true,
+		link: link
+	};
+});
+

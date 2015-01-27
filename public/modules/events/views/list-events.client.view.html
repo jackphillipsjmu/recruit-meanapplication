@@ -23,7 +23,6 @@
 
     <br>
     <div class="list-group">
-        <!--<a data-ng-repeat="event in events | filter:searchText" data-ng-href="#!/events/{{event._id}}" class="list-group-item">-->
         <a data-ng-repeat="event in events | filter:searchText" data-ng-click="eventsCtrl.modalView('lg', event)" class="list-group-item">
             <div class="h2">
                 <span class="glyphicon glyphicon-map-marker"></span>
@@ -42,7 +41,13 @@
             <p><b>Where: </b> {{ event.address }}</p>
             <p><b>Description: </b> {{ event.description }}</p>
 
-            <!--<a href="http://maps.google.com/?q=1200 Pennsylvania Ave SE, Washington, District of Columbia, 20003">White House</a>-->
+            <!-- Google Maps Location -->
+            <div id="map_canvas" data-ng-controller="MapsController" data-ng-init="findAddress(event.address)">
+                <form>
+                    <ui-gmap-google-map center='map.center' zoom='map.zoom' draggable="true" options="options"></ui-gmap-google-map>
+                </form>
+            </div>
+
         </a>
     </div>
 

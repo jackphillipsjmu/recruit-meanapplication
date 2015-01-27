@@ -1,4 +1,4 @@
-<section data-ng-controller="ApplicantsController" data-ng-init="findOne()">
+<section data-ng-controller="ApplicantsController as applicantsCtrl" >
 	<div class="modal-header">
 		<h1 data-ng-bind="applicant.name"></h1>
 	</div>
@@ -80,10 +80,12 @@
 				</accordion>
 
 
-				<a class="btn btn-primary" href="/#!/applicants/{{applicant._id}}/edit">
+				<!--<a class="btn btn-primary" href="/#!/applicants/{{applicant._id}}/edit">-->
+				<a class="btn btn-primary" data-ng-click="applicantsCtrl.modalApplicantUpdate('lg', applicant)">
 					<i class="glyphicon glyphicon-edit"></i>
 				</a>
-				<a class="btn btn-primary" data-ng-click="remove();">
+				<!--<a class="btn btn-primary" data-ng-click="remove();" href="#!/applicants">-->
+				<a class="btn btn-primary" data-ng-click="remove(applicant); ok();">
 					<i class="glyphicon glyphicon-trash"></i>
 				</a>
 				<br><br>

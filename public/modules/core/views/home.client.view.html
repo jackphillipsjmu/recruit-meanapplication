@@ -111,8 +111,8 @@
 						<div data-ng-repeat="applicant in applicantsCtrl.applicants">
 							<ul style="list-style-type: none">
 								<li data-ng-show="applicantsCtrl.getYesterdayDate(applicant.created)">
-									<a href="#!/applicants/{{ applicant._id }}">
-										{{ applicant.firstName }} {{ applicant.lastName }} ({{ applicant.position }})
+									<a data-ng-click="applicantsCtrl.modalApplicantView('lg', applicant)">
+										{{ applicant.firstName + ' ' + applicant.lastName }}
 									</a>
 								</li>
 
@@ -153,8 +153,8 @@
 							<div data-ng-repeat="applicant in applicantsCtrl.applicants">
 								<ul style="list-style-type: none">
 									<li>
-										<a href="#!/applicants/{{applicant._id}}">{{applicant.firstName}}
-											{{applicant.lastName}} ({{ applicant.position }})
+										<a data-ng-click="applicantsCtrl.modalApplicantView('lg', applicant)">
+											{{ applicant.firstName + ' ' + applicant.lastName }}
 										</a>
 									</li>
 								</ul>
@@ -192,8 +192,11 @@
 							<div data-ng-repeat="applicant in applicantsCtrl.applicants">
 								<ul style="list-style-type: none">
 									<li data-ng-show="applicant.followup">
-										<a href="#!/applicants/{{applicant._id}}">{{applicant.firstName}}
-											{{applicant.lastName}}
+										<!--<a href="#!/applicants/{{applicant._id}}">{{applicant.firstName}}-->
+											<!--{{applicant.lastName}} ({{applicant.position}})-->
+										<!--</a>-->
+										<a data-ng-click="applicantsCtrl.modalApplicantView('lg', applicant)">
+											{{ applicant.firstName + ' ' + applicant.lastName }}
 										</a>
 									</li>
 								</ul>
@@ -231,8 +234,8 @@
 							<div data-ng-repeat="applicant in applicantsCtrl.applicants">
 								<ul style="list-style-type: none">
 									<li data-ng-show="applicant.referred">
-										<a href="#!/applicants/{{applicant._id}}">{{applicant.firstName}}
-											{{applicant.lastName}}
+										<a data-ng-click="applicantsCtrl.modalApplicantView('lg', applicant)">
+											{{ applicant.firstName + ' ' + applicant.lastName }}
 										</a>
 									</li>
 								</ul>

@@ -4,8 +4,8 @@ var applicantsApp = angular.module('applicants');
 
 // Applicants controller
 applicantsApp.controller('ApplicantsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Applicants',
-	'$modal', '$log',
-	function($scope, $stateParams, $location, Authentication, Applicants, $modal, $log) {
+	'$modal', '$log', 'NotifyApplicant', '$state',
+	function($scope, $stateParams, $location, Authentication, Applicants, $modal, $log, NotifyApplicant, $state) {
 		this.authentication = Authentication;
 
 		this.applicants = Applicants.query();
@@ -15,29 +15,27 @@ applicantsApp.controller('ApplicantsController', ['$scope', '$stateParams', '$lo
 			console.log('Creating Applicant');
 			// Create new Applicant object
 			var applicant = new Applicants ({
-				firstName: $scope.firstName,
-				lastName: $scope.lastName,
-				address: $scope.address,
-				phone: $scope.phone,
-				email: $scope.email,
-				school: $scope.school,
-				position: $scope.position,
-				degree: $scope.degree,
-				experience: $scope.experience,
-				skills: $scope.skills,
-				referred: $scope.referred,
-				followup: $scope.followup,
-				graduation: Date.parse($scope.graduation),
-				graduated: $scope.graduated,
-				notes: $scope.notes
+				firstName: this.firstName,
+				lastName: this.lastName,
+				address: this.address,
+				phone: this.phone,
+				email: this.email,
+				school: this.school,
+				position: this.position,
+				degree: this.degree,
+				experience: this.experience,
+				skills: this.skills,
+				referred: this.referred,
+				followup: this.followup,
+				graduation: Date.parse(this.graduation),
+				graduated: this.graduated,
+				notes: this.notes
 			});
 
 			// Redirect after save
 			applicant.$save(function(response) {
-				$location.path('applicants/' + response._id);
-
-				// Clear form fields
-				$scope.name = '';
+				// reroute to our applicants list
+				$location.path('applicants');
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -47,6 +45,7 @@ applicantsApp.controller('ApplicantsController', ['$scope', '$stateParams', '$lo
 		$scope.remove = function(applicant) {
 			if ( applicant ) { 
 				applicant.$remove();
+				console.log('first remove');
 
 				for (var i in $scope.applicants) {
 					if ($scope.applicants [i] === applicant) {
@@ -58,87 +57,20 @@ applicantsApp.controller('ApplicantsController', ['$scope', '$stateParams', '$lo
 					$location.path('applicants');
 				});
 			}
+			console.log('after else');
+			//$location.path('applicants');
+			$state.reload();
 		};
 
-		// Open a modal window to update a single customer record
-		this.modalUpdate = function(size, selectedApplicant) {
-			var modalInstance = $modal.open({
-				templateUrl: 'modules/applicants/views/edit-applicant.client.view.html',
-				controller: function($scope, $modalInstance, applicant) {
-					$scope.applicant = applicant;
 
-					// Save & Close option in modal window
-					$scope.ok = function() {
-						// Update existing Customer
-						applicant.$update(function() {
-							// Output to console to check for successful submission
-							console.log('Updating customer: ' + applicant.firstName + ' ' + applicant.lastName);
-						}, function(errorResponse) {
-							$scope.error = errorResponse.data.message;
-							console.log($scope.error);
-						});
-
-						$modalInstance.close();
-					};
-					// Cancel button in modal window
-					$scope.cancel = function() {
-						$modalInstance.dismiss('cancel');
-					};
-				},
-				size: size,
-				resolve: {
-					customer: function() {
-						return selectedApplicant;
-					}
-				}
-			});
-
-		modalInstance.result.then(function(selectedItem) {
-			$scope.selected = selectedItem;
-		}, function() {
-			$log.info('Modal dismissed at: ' + new Date());
-		});
-	};
-
-		this.modalView = function(size, selectedApplicant) {
-			//console.log(selectedEvent);
-			var modalInstance = $modal.open({
-				templateUrl: '/modules/applicants/views/view-applicant.client.view.html',
-				controller: function($scope, $modalInstance, applicant) {
-					$scope.applicant = applicant;
-
-					console.log($scope.applicant.firstName);
-
-					// Save & Close option in modal window
-					$scope.ok = function() {
-						$modalInstance.close();
-					};
-					// Cancel button in modal window
-					$scope.cancel = function() {
-						$modalInstance.dismiss('cancel');
-					};
-				},
-				size: size,
-				resolve: {
-					event: function() {
-						return selectedApplicant;
-					}
-				}
-			});
-
-			modalInstance.result.then(function(selectedItem) {
-				$scope.selected = selectedItem;
-			}, function() {
-				$log.info('Modal dismissed at: ' + new Date());
-			});
-		};
 
 		// Update existing Applicant
 		$scope.update = function() {
 			var applicant = $scope.applicant;
 
 			applicant.$update(function() {
-				$location.path('applicants/' + applicant._id);
+				//$location.path('applicants/' + applicant._id);
+				$location.path('applicants');
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -163,6 +95,93 @@ applicantsApp.controller('ApplicantsController', ['$scope', '$stateParams', '$lo
 
 		};
 
+		// Brings up a modal window of the Applicant for the user to view
+		this.modalApplicantView = function(size, selectedApplicant) {
+			var modalInstance = $modal.open({
+				templateUrl: '/modules/applicants/views/view-applicant.client.view.html',
+				controller: function($scope, $modalInstance, applicant) {
+					$scope.applicant = applicant;
+
+					$scope.removeApplicant = function(applicant) {
+						if (applicant) {
+							applicant.$remove();
+							console.log('Removed');
+							for (var i in $scope.applicants) {
+								if ($scope.applicants [i] === applicant) {
+									$scope.applicants.splice(i, 1);
+								}
+							}
+						} else {
+							$scope.applicant.$remove(function() {
+								$location.path('applicants');
+							});
+						}
+						console.log('modal closing');
+						$modalInstance.close();
+					};
+
+					$scope.ok = function() {
+						$modalInstance.close();
+					};
+					$scope.cancel = function() {
+						$modalInstance.dismiss('cancel');
+					};
+				},
+				size: size,
+				resolve: {
+					applicant: function() {
+						return selectedApplicant;
+					}
+				}
+
+			});
+			modalInstance.result.then(function(selectedItem) {
+				$scope.selected = selectedItem;
+			}, function() {
+				$log.info('Modal Dismissed at: ' + new Date());
+			});
+		};
+
+		this.modalApplicantUpdate = function(size, selectedApplicant) {
+			var modalInstance = $modal.open({
+				templateUrl: '/modules/applicants/views/edit-applicant.client.view.html',
+				controller: function($scope, $modalInstance, applicant) {
+					$scope.applicant = applicant;
+
+					// Save & Close option in modal window
+					$scope.ok = function() {
+						// Update existing Customer
+						applicant.$update(function() {
+							// Output to console to check for successful submission
+							console.log('Updating applicant: ' + applicant.firstName + ' ' + applicant.lastName);
+						}, function(errorResponse) {
+							$scope.error = errorResponse.data.message;
+							console.log($scope.error);
+						});
+						$modalInstance.close();
+
+					};
+					// Cancel button in modal window
+					$scope.cancel = function() {
+						$modalInstance.dismiss('cancel');
+					};
+				},
+				size: size,
+				resolve: {
+					applicant: function() {
+						return selectedApplicant;
+					}
+				}
+			});
+
+			modalInstance.result.then(function(selectedItem) {
+				$scope.selected = selectedItem;
+			}, function() {
+				$log.info('Modal dismissed at: ' + new Date());
+			});
+		};
+
+		// Returns the total number of applicants
 		this.getTotalApplicants = function() {
 			return this.applicants.length;
 		};
@@ -231,6 +250,21 @@ applicantsApp.directive('fileModel', ['$parse', function($parse) {
 			});
 		}
 	};
+}]);
+
+/* Prompts a dialog box confirming that you want to do the associated action (ex. delete a applicant */
+applicantsApp.directive('ngReallyClick', [function() {
+	return {
+		restrict: 'A',
+		link: function(scope, element, attrs) {
+			element.bind('click', function() {
+				var message = attrs.ngReallyMessage;
+				if (message && confirm(message)) {
+					scope.$apply(attrs.ngReallyClick);
+				}
+			});
+		}
+	}
 }]);
 
 applicantsApp.service('fileUpload', ['$http', function ($http) {

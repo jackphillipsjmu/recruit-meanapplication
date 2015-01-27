@@ -4,6 +4,10 @@
 
 .applicant-list {
     font-size: 100px;
+
+}
+.applicant-list:hover{
+    text-shadow: 2px 2px 6px #333333;
 }
 
 .checkbox-left {
@@ -13,4 +17,27 @@
 
 .text-pink {
     color: deeppink;
+}
+
+.applicant-options {
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 20px;
+}
+.applicant-edit {
+    font-size: 20px;
+}
+.applicant-edit:hover {
+    /*color: white;*/
+    text-shadow: 2px 2px 6px #333333;
+}
+
+
+.applicant-remove {
+    font-size: 20px;
+}
+
+.applicant-remove:hover {
+    color: red;
+    text-shadow: 2px 2px 6px #333333;
 }

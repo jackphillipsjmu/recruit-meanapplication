@@ -5,6 +5,9 @@
 .event-list {
     font-size: 100px;
 }
+.event-list:hover {
+    text-shadow: 2px 2px 6px #333333;
+}
 
 #map {
     height:420px;
@@ -19,5 +22,15 @@ h2 {
     margin-bottom:0;
     margin-top: 0;
 }
+h2:hover{
+    text-shadow: 2px 2px 6px #333333;
 
-.angular-google-map-container { height: 400px; }
+}
+
+/*.angular-google-map-container { height: 400px; }*/
+.angular-google-map-container { height: 200px; }
+
+#gmaps {
+    width: 450px;
+    height: 450px;
+}

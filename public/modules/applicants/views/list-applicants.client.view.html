@@ -14,7 +14,6 @@
         </div>
         <!--New Applicant button-->
         <div class="col-xs-12 col-sm-4 text-center">
-            <!--<button type="button" class="btn btn-success text-center" data-ng-click="customersCtrl.modalCreate('lg')">-->
             <a type="button" class="btn btn-success text-center" href="#!/applicants/create">
                 <i class="glyphicon glyphicon-user"></i><br>
                 New Applicant
@@ -27,24 +26,34 @@
     <div class="list-group">
         <div class="col-xs-6 col-sm-4" data-ng-repeat="applicant in applicantsCtrl.applicants | filter:searchText">
 
-            <a href="#!/applicants/{{applicant._id}}" class="list-group-item">
-            <!--<a data-ng-click="applicantsCtrl.modalView('lg', applicant)" class="list-group-item">-->
+            <!--<a href="#!/applicants/{{applicant._id}}" class="list-group-item">-->
+            <!--<a data-ng-click="applicantsCtrl.modalApplicantView('lg', applicant)" class="list-group-item">-->
+            <div class="row text-right">
+                <i tooltip="Edit {{applicant.firstName + ' ' + applicant.lastName}}" class="applicant-edit glyphicon glyphicon-edit" data-ng-click="applicantsCtrl.modalApplicantUpdate('lg', applicant)"></i>
+                <!--<i ng-really-message="Are you sure?" ng-really-click="delete()" tooltip="Remove {{applicant.firstName + ' ' + applicant.lastName}}" class="applicant-remove applicant-options glyphicon glyphicon-remove-circle" data-ng-click="remove(applicant); ok();"></i>-->
+                <i ng-really-message="Are you sure you want to remove {{applicant.firstName + ' ' + applicant.lastName}}?" ng-really-click="remove(applicant); ok();" tooltip="Remove {{applicant.firstName + ' ' + applicant.lastName}}" class="applicant-remove applicant-options glyphicon glyphicon-remove-circle"></i>
+            </div>
+
+
             <h4 class="applicant-list text-center">
-                    <i class="glyphicon glyphicon-user"
-                       data-ng-class="{'text-primary': applicant.followup, 'text-danger': !applicant.followup}"></i>
-                </h4>
-                <div class="row">
-                    <div class="col-xs-10 col-xs-offset-1 text-center">
-                        <h4>{{ applicant.firstName }} {{ applicant.lastName }}</h4>
-                        <p class="text-center text-muted"><b>Postion: </b>{{ applicant.position }}</p>
-                    </div>
+                <i class="glyphicon glyphicon-user"
+                   data-ng-class="{'text-primary': applicant.followup, 'text-danger': !applicant.followup}"
+                        data-ng-click="applicantsCtrl.modalApplicantView('lg', applicant)">
+                </i>
+            </h4>
+
+            <div class="row">
+                <div class="col-xs-10 col-xs-offset-1 text-center">
+                    <h4>{{ applicant.firstName }} {{ applicant.lastName }}</h4>
+                    <p class="text-center text-muted"><b>Postion: </b>{{ applicant.position }}</p>
                 </div>
-            </a>
+            </div>
+            <!--</a>-->
         </div>
     </div>
 
 
     <div class="alert alert-warning text-center" data-ng-hide="!applicants.$resolved || applicants.length">
-    	No Applicants yet, why don't you <a href="/#!/applicants/create">create one</a>?
+        No Applicants yet, why don't you <a href="/#!/applicants/create">create one</a>?
     </div>
 </section>
