@@ -8,7 +8,7 @@ MEAN Application written to help my understanding of AngularJS using boilerplate
 	- Applicants modal routing fixed
 	- Applicants remove now refreshes window using $state.reload()
 	- Map markers for Events working
-	- Removing Events routing prooperly (closing modal, going back to list)
+	- Removing Events routing properly (closing modal, going back to list)
 - 1/26/15:
 	- Modal window for viewing Applicant working (had to rewrite function due to improper injection)
 	- Work beginning on modal edit for applicants
