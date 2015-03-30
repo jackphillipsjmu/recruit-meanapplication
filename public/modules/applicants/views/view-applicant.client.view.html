@@ -6,14 +6,6 @@
 	<div class="modal-body">
 		<form name="viewApplicantForm">
 			<fieldset>
-				<!--<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == applicant.user._id))">-->
-					<!--<a class="btn btn-primary" href="/#!/applicants/{{applicant._id}}/edit">-->
-						<!--<i class="glyphicon glyphicon-edit"></i>-->
-					<!--</a>-->
-					<!--<a class="btn btn-primary" data-ng-click="remove();">-->
-						<!--<i class="glyphicon glyphicon-trash"></i>-->
-					<!--</a>-->
-				<!--</div>-->
 
 				<div class="row text-right">
 					<i tooltip="Edit {{applicant.firstName + ' ' + applicant.lastName}}" class="applicant-edit glyphicon glyphicon-edit" data-ng-click="applicantsCtrl.modalApplicantUpdate('lg', applicant)"></i>
@@ -49,7 +41,6 @@
 						</accordion-heading>
 
 						<ul style="list-style-type:none">
-							<!--<a href="tel:555-555-5555">555-555-5555</a>-->
 							<li><b>Phone: </b><a href="tel:{{ applicant.phone }}">{{ applicant.phone }}</a></li>
 							<li><b>Email: </b><a href="mailto:{{ applicant.email }}">{{ applicant.email }}</a></li>
 							<li><b>Address: </b><a href="http://maps.google.com/?q={{ applicant.address }}">
@@ -104,8 +95,8 @@
 					<input type="file" data-ng-model="myFile" file-model="myFile" /><br>
 					<button data-ng-click="uploadFile()">Upload</button>
 				</div>
+
 			</fieldset>
 		</form>
 	</div>
-
 </section>

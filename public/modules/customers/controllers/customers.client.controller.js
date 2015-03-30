@@ -19,7 +19,6 @@ customersApp.controller('CustomersController', ['$scope', '$stateParams', '$loca
 				controller: function($scope, $modalInstance) {
 
 					$scope.ok = function() {
-						console.log('Creating');
 						// Create new Customer object
 						var customer = new Customers ({
 							firstName: this.firstName,

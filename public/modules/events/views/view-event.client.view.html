@@ -17,7 +17,6 @@
 								   class="event-remove glyphicon glyphicon-trash"
 								   ng-really-click="remove(event); ok()">
 								</i>
-
 							</div>
 						</div>
 						<h4>Basics</h4>
@@ -35,7 +34,20 @@
 							<li><b>Coordinator: </b> {{ event.coordinator }}</li>
 						</ul>
 
+
+						<!-- Google Maps Location -->
+						<h4>Map</h4>
+						<div id="map_canvas" data-ng-controller="MapsController" data-ng-init="findAddress(event.address)">
+							<form>
+								<ui-gmap-google-map center='map.center' zoom='map.zoom' draggable="true" options="options">
+									<!-- Map markers for map -->
+									<ui-gmap-markers models="markers" coords="'self'"></ui-gmap-markers>
+								</ui-gmap-google-map>
+							</form>
+						</div>
+
 						<p><b>Additonal Notes: </b> {{ event.notes }}</p>
+
 
 						<!-- When and who posted the event -->
 						<small>

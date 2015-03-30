@@ -4,8 +4,8 @@ var applicantsApp = angular.module('applicants');
 
 // Applicants controller
 applicantsApp.controller('ApplicantsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Applicants',
-	'$modal', '$log', 'NotifyApplicant', '$state',
-	function($scope, $stateParams, $location, Authentication, Applicants, $modal, $log, NotifyApplicant, $state) {
+	'$modal', '$log', 'NotifyApplicant', '$state', 'fileUpload',
+	function($scope, $stateParams, $location, Authentication, Applicants, $modal, $log, NotifyApplicant, $state, fileUpload) {
 		this.authentication = Authentication;
 
 		this.applicants = Applicants.query();
@@ -85,12 +85,32 @@ applicantsApp.controller('ApplicantsController', ['$scope', '$stateParams', '$lo
 			});
 		};
 
-
-		$scope.uploadFile = function() {
-			var file = $scope.myFile;
-			console.log('file is: ' + JSON.stringify(file));
-
-		};
+		//exports.imageUpload = function(req, res) {
+		//	var file = req.files.file,
+		//		path = './public/profile/img/';
+        //
+		//	// Logic for handling missing file, wrong mimetype, no buffer, etc.
+        //
+		//	var buffer = file.buffer, //Note: buffer only populates if you set inMemory: true.
+		//		fileName = file.name;
+		//	var stream = fs.createWriteStream(path + fileName);
+		//	stream.write(buffer);
+		//	stream.on('error', function(err) {
+		//		console.log('Could not write file to memory.');
+		//		res.status(400).send({
+		//			message: 'Problem saving the file. Please try again.'
+		//		});
+		//	});
+		//	stream.on('finish', function() {
+		//		console.log('File saved successfully.');
+		//		var data = {
+		//			message: 'File saved successfully.'
+		//		};
+		//		res.jsonp(data);
+		//	});
+		//	stream.end();
+		//	console.log('Stream ended.');
+		//};
 
 		// Brings up a modal window of the Applicant for the user to view
 		this.modalApplicantView = function(size, selectedApplicant) {
@@ -228,10 +248,30 @@ applicantsApp.controller('ApplicantsController', ['$scope', '$stateParams', '$lo
 			return false;
 		};
 
-
+		$scope.uploadFile = function(){
+			var file = $scope.myFile;
+			console.log('file is ' + JSON.stringify(file));
+			var uploadUrl = "/public/modules/applicants/views/applicant-upload.html";
+			fileUpload.uploadFileToUrl(file, uploadUrl);
+		};
 
 	}
 ]);
+
+/* Prompts a dialog box confirming that you want to do the associated action (ex. delete a applicant */
+applicantsApp.directive('ngReallyClick', [function() {
+	return {
+		restrict: 'A',
+		link: function(scope, element, attrs) {
+			element.bind('click', function() {
+				var message = attrs.ngReallyMessage;
+				if (message && confirm(message)) {
+					scope.$apply(attrs.ngReallyClick);
+				}
+			});
+		}
+	}
+}]);
 
 applicantsApp.directive('fileModel', ['$parse', function($parse) {
 	return {
@@ -249,21 +289,6 @@ applicantsApp.directive('fileModel', ['$parse', function($parse) {
 	};
 }]);
 
-/* Prompts a dialog box confirming that you want to do the associated action (ex. delete a applicant */
-applicantsApp.directive('ngReallyClick', [function() {
-	return {
-		restrict: 'A',
-		link: function(scope, element, attrs) {
-			element.bind('click', function() {
-				var message = attrs.ngReallyMessage;
-				if (message && confirm(message)) {
-					scope.$apply(attrs.ngReallyClick);
-				}
-			});
-		}
-	}
-}]);
-
 applicantsApp.service('fileUpload', ['$http', function ($http) {
 	this.uploadFileToUrl = function(file, uploadUrl){
 		var fd = new FormData();
@@ -279,4 +304,23 @@ applicantsApp.service('fileUpload', ['$http', function ($http) {
 				console.log('ERROR');
 			});
 	};
+}]);
+
+applicantsApp.controller('FileController', ['$scope', '$stateParams', '$location', 'Authentication', '$upload',
+	function ($scope, $stateParams, $location, Authentication, $upload){
+		$upload.upload({
+			url: '/serverRouteUrl', //upload.php script, node.js route, or servlet url
+			method: 'POST', //Post or Put
+			headers: {'Content-Type': 'multipart/form-data'},
+			//withCredentials: true,
+			data: JsonObject, //from data to send along with the file
+			file: blob, // or list of files ($files) for html5 only
+			//fileName: 'photo' // to modify the name of the file(s)
+		}).success(function (response, status) {
+				//success
+			}
+		).error(function (err) {
+				//error
+			}
+		);
 }]);

@@ -7,12 +7,6 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
-//var filePluginLib = require('mongoose-file');
-//var filePlugin = filePluginLib.filePlugin;
-//var make_upload_to_model = filePluginLib.make_upload_to_model;
-//var uploads_base = path.join(__dirname, "uploads");
-//var uploads = path.join(uploads_base, "u");
-
 /**
  * Applicant Schema
  */
@@ -94,12 +88,5 @@ var ApplicantSchema = new Schema({
 		ref: 'User'
 	}
 });
-
-//ApplicantSchema.plugin(filePlugin, {
-//	name: "photo",
-//	upload_to: make_upload_to_model(uploads, 'photos'),
-//	relative_to: uploads_base
-//});
-
 
 mongoose.model('Applicant', ApplicantSchema);
